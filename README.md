@@ -1,6 +1,5 @@
-# machine-learning-final-report
 ## Table of contents
-**[CHAPTER 1: OPTIMIZATION ALGORITHMS IN MACHINE LEARNING]**
+**[CHAPTER 1: OPTIMIZATION ALGORITHMS IN MACHINE LEARNING](01-optimization-algorithms-of-ml-systems.md)**
 - 1.1 Introduction
 - 1.2 How do Optimizers work?
 - Optimization algorithms
@@ -18,7 +17,7 @@
   - 1.3.9 Adaptive Moment Estimation (Adam)
 - 1.4 When to choose this algorithm?
   
-**[CHAPTER 2: CONTINUAL LEARNING AND TEST IN PRODUCTION]**
+**[CHAPTER 2: CONTINUAL LEARNING AND TEST IN PRODUCTION](02-continual-learning-and-test-in-production.md)**
 - 2.1 Continual Learning
   - 2.1.1 Why Continual Learning?
   - 2.1.2 Concept: Stateless retraining VS Stateful training
