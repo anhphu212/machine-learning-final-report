@@ -47,7 +47,8 @@ The given equation calculates the gradient of the cost function J(θ) w.r.t to t
 Our objective is to reach the lowest point on our graph, representing the relationship between the cost and weights (Cost and weights) or a point where further descent is no longer possible—a local minimum.
 
 Now, let's explore the concept of "Gradient."
-"A gradient measures how much the output of a function changes if you change the inputs a little bit." — Lex Fridman (MIT)
+
+**"A gradient measures how much the output of a function changes if you change the inputs a little bit." — Lex Fridman (MIT)**
 
 #### 1.3.1.2 Importance of Learning rate
 The size of the steps that gradient descent takes toward the local minimum is determined by the learning rate, which dictates the speed of our movement towards the optimal weights.
@@ -60,11 +61,13 @@ Therefore, it is essential to avoid setting the learning rate either too high or
 
 In programming code, the implementation of gradient descent typically resembles the following structure:
 
+```python
 for i in range(nb_epochs):   
     params_grad = evaluate_gradient(loss_function, data, params)          
     params = params - learning_rate * params_grad
+```
     
-Over a predetermined number of epochs, the initial step involves computing the gradient vector, denoted as params_grad, of the loss function concerning our parameter vector, params, across the entire dataset.
+Over a predetermined number of epochs, the initial step involves computing the gradient vector, denoted as *params_grad*, of the loss function concerning our parameter vector, *params*, across the entire dataset.
 
 #### 1.3.1.3 Advantages and disadvantages
 Advantages:
@@ -84,7 +87,7 @@ The Stochastic Gradient Descent (SGD) algorithm is a development of the Gradient
 
 SGD conducts a parameter update for every training example, denoted as x(i), along with its corresponding label y(i):
 
-θ = θ − α⋅∂(J(θ;x(i),y(i)))/∂θ
+**θ = θ − α⋅∂(J(θ;x(i),y(i)))/∂θ**
 
 where {x(i) ,y(i)} are the training examples.
 To expedite the training process, we perform a Gradient Descent step for each training example. The potential implications of this approach are illustrated in the image below.
@@ -100,11 +103,13 @@ In SGD, it is noted that updates require more iterations compared to gradient de
 
 The code segment for SGD involves the addition of a loop over the training examples, where the gradient with respect to each example is evaluated.
 
+```python
 for i in range(nb_epochs):
     np.random.shuffle(data)
     for example in data:
         params_grad = evaluate_gradient(loss_function, example, params)
         params = params - learning_rate * params_grad
+```
 
 Advantage:
   - Reduced memory requirements compared to the Gradient Descent (GD) algorithm, given that the derivative is computed using only one point at a time.
@@ -125,16 +130,18 @@ The weight update in MB-SGD relies on the derivative of the loss computed for a 
 
 MB-SGD partitions the dataset into several batches, and after processing each batch, the algorithm updates the parameters.
 
-θ = θ − α⋅∂(J(θ;B(i)))/∂θ
+**θ = θ − α⋅∂(J(θ;B(i)))/∂θ**
 
 where {B(i)} are the batches of training examples.
 In the code, rather than iterating over individual examples, we now iterate over mini-batches, each containing 50 examples:
 
+```python
 for i in range(nb_epochs):
     np.random.shuffle(data)
     for batch in get_batches(data, batch_size=50):
         params_grad = evaluate_gradient(loss_function, batch, params)
         params = params - learning_rate * params_grad
+```
 
 Advantage:
   - Lower time complexity for convergence compared to the standard SGD algorithm.
@@ -149,9 +156,9 @@ A significant drawback of the MB-SGD algorithm is the noisy updates in weight. T
 
 The concept involves denoising the derivative through exponential weighting averages, assigning more weight to recent updates compared to previous ones. This approach accelerates convergence in the relevant direction while minimizing fluctuations in irrelevant directions. An additional hyperparameter, referred to as momentum and denoted by 'γ', is introduced in this method.
 
-V(t) = γ.V(t−1) + α.∂(J(θ))/∂θ
+**V(t) = γ.V(t−1) + α.∂(J(θ))/∂θ**
 
-Now, the weights are updated by θ = θ − V(t).
+Now, the weights are updated by **θ = θ − V(t)**.
 
 The typical choice for the momentum term, γ, is around 0.9 or a similar value.
 
@@ -173,11 +180,11 @@ Disadvantage:
 ### 1.3.5 Nesterov Accelerated Gradient (NAG)
 The concept behind the NAG algorithm is quite similar to SGD with momentum, with a subtle variation. In SGD with momentum, both momentum and gradient are computed based on the previously updated weights.
 
-While momentum is a beneficial method, excessive momentum might cause the algorithm to overlook local minima and continue ascending. To address this issue, the NAG algorithm was introduced as a lookahead approach. By using γ.V(t−1) to adjust the weights, θ−γV(t−1) provides an approximate glimpse into the future location. Consequently, the algorithm calculates the cost based on this anticipated future parameter rather than the current one.
+While momentum is a beneficial method, excessive momentum might cause the algorithm to overlook local minima and continue ascending. To address this issue, the NAG algorithm was introduced as a lookahead approach. By using **γ.V(t−1)** to adjust the weights, **θ−γV(t−1)** provides an approximate glimpse into the future location. Consequently, the algorithm calculates the cost based on this anticipated future parameter rather than the current one.
 
-V(t) = γ.V(t−1) + α. ∂(J(θ − γV(t−1)))/∂θ
+**V(t) = γ.V(t−1) + α. ∂(J(θ − γV(t−1)))/∂θ**
 
-and then update the parameters using θ = θ − V(t).
+and then update the parameters using **θ = θ − V(t)**.
 
 Once again, the momentum term γ is typically set to a value around 0.9. While Momentum initially computes the current gradient (small brown vector in the Image below) and then takes a substantial step in the direction of the updated accumulated gradient (big brown vector), NAG follows a different sequence. NAG first takes a significant step in the direction of the previously accumulated gradient (green vector), evaluates the gradient, and then introduces a correction (red vector), culminating in the complete NAG update (red vector). This forward-looking update serves as a preventive measure to avoid excessive speed and enhances responsiveness, contributing significantly to the improved performance of RNNs across various tasks.
 
@@ -188,19 +195,19 @@ Both the NAG and SGD with momentum algorithms perform comparably well and exhibi
 ### 1.3.6 Adaptive Gradient Descent(AdaGrad)
 In contrast to the previously discussed algorithms where the learning rate remains constant, AdaGrad introduces the concept of an adaptive learning rate for each weight. This approach involves making smaller updates for parameters linked to frequently occurring features and larger updates for parameters associated with infrequently occurring features.
 
-For conciseness, the notation used includes gt to represent the gradient at time step t. gt,i as the partial derivative of the objective function w.r.t. with respect to the parameter θi at time step t, η as the learning rate, and ∇θ as the partial derivative of the loss function J(θi).
+For conciseness, the notation used includes gt to represent the gradient at time step t. **gt,i** as the partial derivative of the objective function w.r.t. with respect to the parameter **θi** at time step **t, η** as the learning rate, and ∇θ as the partial derivative of the loss function **J(θi)**.
 
 ![picture11](01-optimization-algorithms-in-machine-learning.assets/Picture11.png)
 
-In its update rule, Adagrad adjusts the general learning rate η at each time step t for each parameter θi, taking into account the historical gradients for θi:
+In its update rule, Adagrad adjusts the general learning rate **η** at each time step **t** for each parameter **θi**, taking into account the historical gradients for **θi**:
 
 ![picture12](01-optimization-algorithms-in-machine-learning.assets/Picture12.png)
 
-where Gt is the sum of the squares of the past gradients w.r.t to all parameters θ.
+where Gt is the sum of the squares of the past gradients w.r.t to all parameters **θ**.
 
 The advantage of AdaGrad lies in its ability to eliminate the necessity for manual tuning of the learning rate, with many practitioners opting for a default value of 0.01.
 
-However, a notable weakness of AdaGrad is the accumulation of squared gradients (Gt) in the denominator. Due to the positivity of each added term, the accumulated sum continues to grow during training. This causes the learning rate to progressively shrink, eventually becoming exceedingly small and resulting in the vanishing gradient problem.
+However, a notable weakness of AdaGrad is the accumulation of squared gradients (**Gt**) in the denominator. Due to the positivity of each added term, the accumulated sum continues to grow during training. This causes the learning rate to progressively shrink, eventually becoming exceedingly small and resulting in the vanishing gradient problem.
 
 Advantage:
   - Adaptive adjustment of the learning rate with iterations eliminates the need for manual updates.
@@ -213,7 +220,7 @@ The drawback with the previous algorithm, AdaGrad, was the diminishing learning 
 
 AdaDelta represents a more robust extension of Adagrad, adapting learning rates based on a moving window of gradient updates rather than accumulating all past gradients. This approach enables AdaDelta to continue learning effectively even after numerous updates. In the original version of AdaDelta, there is no need to set an initial learning rate.
 
-Instead of inefficiently storing the previous w squared gradients, the sum of gradients is recursively defined as a decaying average of all past squared gradients. The running E[g2]t average  at time step t is dependent only on the previous average and the current gradient:
+Instead of inefficiently storing the previous w squared gradients, the sum of gradients is recursively defined as a decaying average of all past squared gradients. The running **E[g2]t** average  at time step t is dependent only on the previous average and the current gradient:
 
 ![picture13](01-optimization-algorithms-in-machine-learning.assets/Picture13.png)
 
@@ -239,7 +246,7 @@ The hyperparameters β1 and β2, both belonging to the range [0, 1), govern the 
 
 ![picture16](01-optimization-algorithms-in-machine-learning.assets/Picture16.png)
 
-The terms mt and vt represent estimations of the first moment (the mean) and the second moment (the uncentered variance) of the gradients, giving rise to the name of the method.
+The terms **mt** and **vt** represent estimations of the first moment (the mean) and the second moment (the uncentered variance) of the gradients, giving rise to the name of the method.
 
 ## 1.4 When to choose this algorithm?
 
