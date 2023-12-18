@@ -1,3 +1,6 @@
+# Author: Bui Anh Phu
+# Student ID: 521H0508
+
 ## Table of contents
 **[CHAPTER 1: OPTIMIZATION ALGORITHMS IN MACHINE LEARNING](01-optimization-algorithms-in-machine-learning.md)**
 - 1.1 Introduction
