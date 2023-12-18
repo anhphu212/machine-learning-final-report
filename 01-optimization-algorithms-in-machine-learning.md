@@ -1,5 +1,6 @@
 # CHAPTER 1: OPTIMIZATION ALGORITHMS IN MACHINE LEARNING
 Overview of some of the most used optimizers while training a neural network.
+![picture1](01-optimization-algorithms-in-machine-learning.assets/Picture1.png)
 
 ## 1.1 Introduction
 In the field of machine learning, the concept of loss quantifies the model's current performance, indicating how poorly it is performing. The objective is to leverage this loss information to enhance the model's capabilities. The primary goal is to minimize the loss, as a lower loss corresponds to improved model performance. The systematic procedure of reducing (or increasing) any mathematical expression is referred to as optimization.
@@ -37,8 +38,11 @@ The process commences by setting the initial values for the parameters, and then
 
 Initialization strategies are employed to set the initial weight, and with each epoch, the weight undergoes updates in accordance with the prescribed update equation.
 
+![picture2](01-optimization-algorithms-in-machine-learning.assets/Picture2.png)
 
 The given equation calculates the gradient of the cost function J(θ) w.r.t to the parameters or weights θ across the entire training dataset:
+
+![picture3](01-optimization-algorithms-in-machine-learning.assets/Picture3.png)
 
 Our objective is to reach the lowest point on our graph, representing the relationship between the cost and weights (Cost and weights) or a point where further descent is no longer possible—a local minimum.
 
@@ -49,6 +53,8 @@ Now, let's explore the concept of "Gradient."
 The size of the steps that gradient descent takes toward the local minimum is determined by the learning rate, which dictates the speed of our movement towards the optimal weights.
 
 To ensure that gradient descent effectively reaches the local minimum, it is crucial to set the learning rate to an appropriate value neither too low nor too high. This consideration is significant because excessively large steps might result in the algorithm bouncing back and forth within the convex function of gradient descent (as illustrated in the left image below). Conversely, if the learning rate is set too small, gradient descent will eventually reach the local minimum, but the process may be prolonged (as depicted in the right image below).
+
+![picture5](01-optimization-algorithms-in-machine-learning.assets/Picture5.png)
 
 Therefore, it is essential to avoid setting the learning rate either too high or too low. To assess the effectiveness of the learning rate, it can be visualized on a graph.
 
@@ -74,12 +80,16 @@ Disadvantages:
 ### 1.3.2 Stochastic Gradient Descent (SGD)
 The Stochastic Gradient Descent (SGD) algorithm is a development of the Gradient Descent, designed to address certain drawbacks of the GD algorithm. Gradient Descent is hindered by its need for substantial memory to process the entire dataset of n points simultaneously in order to compute the derivative of the loss function. In contrast, the SGD algorithm calculates the derivative by considering one point at a time, mitigating the memory requirements.
 
+![picture6](01-optimization-algorithms-in-machine-learning.assets/Picture6.png)
+
 SGD conducts a parameter update for every training example, denoted as x(i), along with its corresponding label y(i):
 
 θ = θ − α⋅∂(J(θ;x(i),y(i)))/∂θ
 
 where {x(i) ,y(i)} are the training examples.
 To expedite the training process, we perform a Gradient Descent step for each training example. The potential implications of this approach are illustrated in the image below.
+
+![picture7](01-optimization-algorithms-in-machine-learning.assets/Picture7.png)
 
   - On the left side, we observe Stochastic Gradient Descent (where m=1 per step), where a Gradient Descent step is taken for each individual example. On the right side is Gradient Descent (1 step per entire training set).
   - SGD exhibits noticeable noise, yet it is considerably faster, albeit with a risk of not converging to a minimum.
@@ -108,6 +118,8 @@ Disadvantages:
 MB-SGD algorithm extends the capabilities of the SGD algorithm, addressing the issue of high time complexity associated with SGD. MB-SGD, rather than considering one point at a time, takes a batch or subset of points from the dataset to compute derivatives.
 
 It is observed that, after a certain number of iterations, the derivative of the loss function for MB-SGD closely resembles the derivative of the loss function for Gradient Descent. However, MB-SGD requires more iterations to reach the minima compared to GD, and the computational cost is also higher.
+
+![picture8](01-optimization-algorithms-in-machine-learning.assets/Picture8.png)
 
 The weight update in MB-SGD relies on the derivative of the loss computed for a batch of points. The updates in the case of MB-SGD exhibit more noise because the derivative does not consistently point towards the minima.
 
@@ -147,6 +159,8 @@ Momentum at time 't' is calculated by considering all previous updates, assignin
 
 In essence, when employing momentum, it's akin to rolling a ball down a hill. The ball accumulates momentum, gaining speed as it descends (until it reaches a terminal velocity if there is air resistance, i.e., when γ<1). A similar principle applies to our parameter updates: the momentum term increases for dimensions with gradients pointing in the same direction, reducing updates for dimensions with changing gradient directions. Consequently, this results in faster convergence and reduced oscillation.
 
+![picture9](01-optimization-algorithms-in-machine-learning.assets/Picture9.png)
+
 The diagram depicted above demonstrates that SGD with momentum effectively denoises gradients, leading to faster convergence when compared to standard SGD.
 
 Advantages:
@@ -167,6 +181,8 @@ and then update the parameters using θ = θ − V(t).
 
 Once again, the momentum term γ is typically set to a value around 0.9. While Momentum initially computes the current gradient (small brown vector in the Image below) and then takes a substantial step in the direction of the updated accumulated gradient (big brown vector), NAG follows a different sequence. NAG first takes a significant step in the direction of the previously accumulated gradient (green vector), evaluates the gradient, and then introduces a correction (red vector), culminating in the complete NAG update (red vector). This forward-looking update serves as a preventive measure to avoid excessive speed and enhances responsiveness, contributing significantly to the improved performance of RNNs across various tasks.
 
+![picture10](01-optimization-algorithms-in-machine-learning.assets/Picture10.png)
+
 Both the NAG and SGD with momentum algorithms perform comparably well and exhibit the same set of advantages and disadvantages.
 
 ### 1.3.6 Adaptive Gradient Descent(AdaGrad)
@@ -174,7 +190,11 @@ In contrast to the previously discussed algorithms where the learning rate remai
 
 For conciseness, the notation used includes gt to represent the gradient at time step t. gt,i as the partial derivative of the objective function w.r.t. with respect to the parameter θi at time step t, η as the learning rate, and ∇θ as the partial derivative of the loss function J(θi).
 
+![picture11](01-optimization-algorithms-in-machine-learning.assets/Picture11.png)
+
 In its update rule, Adagrad adjusts the general learning rate η at each time step t for each parameter θi, taking into account the historical gradients for θi:
+
+![picture12](01-optimization-algorithms-in-machine-learning.assets/Picture12.png)
 
 where Gt is the sum of the squares of the past gradients w.r.t to all parameters θ.
 
@@ -193,13 +213,18 @@ The drawback with the previous algorithm, AdaGrad, was the diminishing learning 
 
 AdaDelta represents a more robust extension of Adagrad, adapting learning rates based on a moving window of gradient updates rather than accumulating all past gradients. This approach enables AdaDelta to continue learning effectively even after numerous updates. In the original version of AdaDelta, there is no need to set an initial learning rate.
 
-Instead of inefficiently storing the previous w squared gradients, the sum of gradients is recursively defined as a decaying average of all past squared gradients. The running average  at time step t is dependent only on the previous average and the current gradient:
+Instead of inefficiently storing the previous w squared gradients, the sum of gradients is recursively defined as a decaying average of all past squared gradients. The running E[g2]t average  at time step t is dependent only on the previous average and the current gradient:
+
+![picture13](01-optimization-algorithms-in-machine-learning.assets/Picture13.png)
 
 With AdaDelta, there is no necessity to specify a default learning rate, as it has been removed from the update rule.
 
+![picture14](01-optimization-algorithms-in-machine-learning.assets/Picture14.png)
 
 ### 1.3.8 RMSprop
 RMSprop is essentially identical to the initial update vector of Adadelta that was derived earlier.
+
+![picture15](01-optimization-algorithms-in-machine-learning.assets/Picture15.png)
 
 RMSprop also involves dividing the learning rate by an exponentially decaying average of squared gradients. Geoffrey Hinton recommends setting γ to 0.9, and a commonly suggested default value for the learning rate η is 0.001.
 
@@ -212,9 +237,13 @@ Adam calculates adaptive learning rates for each parameter. In addition to maint
 
 The hyperparameters β1 and β2, both belonging to the range [0, 1), govern the exponential decay rates of these moving averages. The computation of the decaying averages of past gradients mt and past squared gradients vt is performed as outlined below:
 
+![picture16](01-optimization-algorithms-in-machine-learning.assets/Picture16.png)
+
 The terms mt and vt represent estimations of the first moment (the mean) and the second moment (the uncentered variance) of the gradients, giving rise to the name of the method.
 
 ## 1.4 When to choose this algorithm?
+
+![picture17](01-optimization-algorithms-in-machine-learning.assets/Picture17.png)
 
 As evident from the training cost, Adam consistently achieves the lowest values.
 
