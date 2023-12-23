@@ -1,5 +1,4 @@
-# Author: Bui Anh Phu
-# Student ID: 521H0508
+Author: Bui Anh Phu [521H0508]
 
 ## Table of contents
 **[CHAPTER 1: OPTIMIZATION ALGORITHMS IN MACHINE LEARNING](01-optimization-algorithms-in-machine-learning.md)**
@@ -8,7 +7,7 @@
 - Optimization algorithms
   - 1.3.1 Gradient Descent
     - 1.3.1.1 What is Gradient descent?
-    - 1.3.1.2 Importancce of Learning rate
+    - 1.3.1.2 Importance of Learning rate
     - 1.3.1.3 Advantages and disadvantages
   - 1.3.2 Stochastic Gradient Descent (SGD)
   - 1.3.3 Mini Batch Stochastic Gradient Descent (MB-SGD)
